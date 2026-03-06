@@ -2,12 +2,24 @@
     import { onMount } from "svelte";
 
     import "cherry-markdown/dist/cherry-markdown.css";
+    import { readLocalMarkdown } from "$lib/utlis/file_utils";
     /**
      * @type {HTMLDivElement}
      */
     let markdownContainer;
     let cherry;
     onMount(async () => {
+        // 现代标准写法
+        window.addEventListener("beforeunload", (event) => {
+            // 只有在确定有未保存数据时才拦截
+
+            // 根据规范，调用 preventDefault 即可触发弹窗
+            event.preventDefault();
+
+            // 备注：为了兼容极少数尚未完全同步标准的浏览器，
+            // 依然可以保留这一行，但不要指望它能显示你的自定义文字。
+            event.returnValue = true;
+        });
         const { default: Cherry } = await import("cherry-markdown");
         /**
          * 自定义一个语法
@@ -34,6 +46,21 @@
                 },
             },
         );
+
+        let customMenuOpenFile = Cherry.createMenuHook("打开文档", {
+            iconName: "",
+            onClick: async function () {
+                const mdTxt = await readLocalMarkdown();
+                cherry?.setMarkdown(mdTxt, true);
+            },
+        });
+        let customMenuCLoseFile = Cherry.createMenuHook("关闭文档", {
+            iconName: "",
+            onClick: async function () {
+                window.location.reload();
+            },
+            locale: {},
+        });
         /**
          * 自定义一个自定义菜单
          * 点第一次时，把选中的文字变成同时加粗和斜体
@@ -78,63 +105,35 @@
                 return $selection.replace(/(^)([^\n]+)($)/gm, "$1***$2***$3");
             },
         });
-        /**
-         * 定义一个空壳，用于自行规划cherry已有工具栏的层级结构
-         */
-        let customMenuB = Cherry.createMenuHook("实验室", {
-            icon: {
-                type: "svg",
-                content:
-                    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><path d="M8 14s1.5 2 4 2 4-2 4-2" /><line x1="9" y1="9" x2="9.01" y2="9" /><line x1="15" y1="9" x2="15.01" y2="9" /></svg>',
-                iconStyle: "width: 15px; height: 15px; vertical-align: middle;",
-            },
-        });
+        // /**
+        //  * 定义一个空壳，用于自行规划cherry已有工具栏的层级结构
+        //  */
+        // let customMenuB = Cherry.createMenuHook("实验室", {
+        //     icon: {
+        //         type: "svg",
+        //         content:
+        //             '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><path d="M8 14s1.5 2 4 2 4-2 4-2" /><line x1="9" y1="9" x2="9.01" y2="9" /><line x1="15" y1="9" x2="15.01" y2="9" /></svg>',
+        //         iconStyle: "width: 15px; height: 15px; vertical-align: middle;",
+        //     },
+        // });
         /**
          * 定义一个自带二级菜单的工具栏
          */
         let customMenuC = Cherry.createMenuHook("帮助中心", {
             iconName: "question",
-            onClick: (selection, type) => {
-                switch (type) {
-                    case "shortKey":
-                        return `${selection}快捷键看这里：https://codemirror.net/5/demo/sublime.html`;
-                    case "github":
-                        return `${selection}我们在这里：https://github.com/Tencent/cherry-markdown`;
-                    case "release":
-                        return `${selection}我们在这里：https://github.com/Tencent/cherry-markdown/releases`;
-                    default:
-                        return selection;
-                }
-            },
             subMenuConfig: [
                 {
                     noIcon: true,
-                    name: "快捷键",
+                    name: "issues",
                     onclick: (event) => {
-                        cherry.toolbar.menus.hooks.customMenuCName.fire(
-                            null,
-                            "shortKey",
-                        );
+                        window.open("https://github.com/langbiantianya/pwaMarkdownEdit/issues")
                     },
                 },
                 {
                     noIcon: true,
-                    name: "联系我们",
+                    name: "ab",
                     onclick: (event) => {
-                        cherry.toolbar.menus.hooks.customMenuCName.fire(
-                            null,
-                            "github",
-                        );
-                    },
-                },
-                {
-                    noIcon: true,
-                    name: "更新日志",
-                    onclick: (event) => {
-                        cherry.toolbar.menus.hooks.customMenuCName.fire(
-                            null,
-                            "release",
-                        );
+                        alert("本编辑器基于腾讯开源的cherry markdown编辑器开发")
                     },
                 },
             ],
@@ -406,6 +405,8 @@
             },
             toolbars: {
                 toolbar: [
+                    "customMenuOpenFile",
+                    "|",
                     "bold",
                     "italic",
                     {
@@ -450,14 +451,17 @@
                     "codeTheme",
                     "search",
                     "shortcutKey",
-                    {
-                        customMenuBName: [
-                            "customMenuAName",
-                        ],
-                    },
+                    // {
+                    //     customMenuBName: ["customMenuAName"],
+                    // },
                     "customMenuCName",
                 ],
-                toolbarRight: ["export", "changeLocale", "wordCount"],
+                toolbarRight: [
+                    "export",
+                    "customMenuCLoseFile",
+                    "changeLocale",
+                    "wordCount",
+                ],
                 bubble: [
                     "bold",
                     "italic",
@@ -477,9 +481,11 @@
                 },
                 customMenu: {
                     customMenuAName: customMenuA,
-                    customMenuBName: customMenuB,
+                    // customMenuBName: customMenuB,
                     customMenuCName: customMenuC,
                     customMenuTable,
+                    customMenuOpenFile,
+                    customMenuCLoseFile,
                 },
                 shortcutKeySettings: {
                     /** 是否替换已有的快捷键, true: 替换默认快捷键； false： 会追加到默认快捷键里，相同的shortcutKey会覆盖默认的 */
