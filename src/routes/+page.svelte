@@ -56,12 +56,16 @@
                     onclick: async function () {
                         const mdTxt = await readLocalMarkdown();
                         cherry?.setMarkdown(mdTxt, true);
+                        // 打开文件后保存到缓存中
+                        localStorage.setItem("lastMarkdown", mdTxt);
                     },
                 },
                 {
                     noIcon: true,
                     name: "关闭",
-                    onclick: async function () {
+                    onclick: function () {
+                        // 关闭文件后清空缓存
+                        localStorage.removeItem("lastMarkdown");
                         window.location.reload();
                     },
                 },
@@ -502,23 +506,21 @@
                     },
                 },
             },
-            previewer: {
-                // 自定义markdown预览区域class
-                // className: 'markdown'
-                floatWhenClosePreviewer: true,
-            },
             keydown: [],
             //extensions: [],
             callback: {
-                onClickPreview: (event) => {
-                    console.log("onClickPreview", event);
-                },
-                afterAsyncRender: (md, html) => {
-                    // console.log("afterAsyncRender", md, html);
-                },
-                urlProcessor(url, srcType) {
-                    console.log(`url-processor`, url, srcType);
-                    return url;
+                // onClickPreview: (event) => {
+                //     console.log("onClickPreview", event);
+                // },
+                // afterAsyncRender: (md, html) => {
+                //     console.log("afterAsyncRender", md, html);
+                // },
+                // urlProcessor(url, srcType) {
+                //     console.log(`url-processor`, url, srcType);
+                //     return url;
+                // },
+                afterChange(text, html) {
+                    localStorage.setItem("lastMarkdown", text);
                 },
             },
             editor: {
@@ -541,6 +543,7 @@
             },
         };
         cherry = new Cherry(basicConfig);
+        cherry.setMarkdown(localStorage.getItem("lastMarkdown") || "", true);
     });
 </script>
 
