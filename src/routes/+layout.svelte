@@ -1,7 +1,6 @@
 <script>
 	import "./layout.css";
 	let { children } = $props();
-	import { onMount } from "svelte";
 </script>
 
 <svelte:head>
