@@ -1,7 +1,7 @@
 {
   "name": "Markdown Edit",
   "short_name": "Markdown",
-  "description": "无需下载即可编辑 Markdown 文档的高效编辑器",
+  "description": "无需下载即可在线编辑 Markdown 文档的高效编辑器",
   "lang": "zh-CN",
   "start_url": "/",
   "scope": "/",
