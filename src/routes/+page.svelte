@@ -136,7 +136,7 @@
                     name: "about",
                     onclick: (event) => {
                         alert(
-                            "本编辑器基于腾讯开源的cherry markdown编辑器开发",
+                            "本站点基于腾讯开源的cherry markdown编辑器开发",
                         );
                     },
                 },
