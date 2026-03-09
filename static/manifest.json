@@ -1,22 +1,31 @@
 {
-	"name": "Markdown edit",
-	"short_name": "Markdown",
-	"icons": [
-		{
-			"src": "/web-app-manifest-192x192.png",
-			"sizes": "192x192",
-			"type": "image/png",
-			"purpose": "maskable"
-		},
-		{
-			"src": "/web-app-manifest-512x512.png",
-			"sizes": "512x512",
-			"type": "image/png",
-			"purpose": "maskable"
-		}
-	],
-	"theme_color": "#ffffff",
-	"background_color": "#ffffff",
-	"display": "standalone",
-	"description": "无需下载即可编辑markdown文档的编辑器"
+  "name": "Markdown Edit",
+  "short_name": "Markdown",
+  "description": "无需下载即可编辑 Markdown 文档的高效编辑器",
+  "lang": "zh-CN",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#333333",
+  "icons": [
+    {
+      "src": "/web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
 }

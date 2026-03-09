@@ -41,6 +41,7 @@
 		content="https://edit.lieflat.live/web-app-manifest-512x512.png"
 	/>
 	<meta property="og:url" content="https://edit.lieflat.live/" />
+	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta property="og:type" content="website" />
 	<link rel="manifest" href="/manifest.json" />
 	<meta name="theme-color" content="#000000" />
