@@ -1,6 +1,39 @@
 <script>
 	import "./layout.css";
 	let { children } = $props();
+	import { onMount, onDestroy } from 'svelte';
+
+	// 检测是否为移动端
+	let isMobile = false;
+	// 检测是否为竖屏
+	let isPortrait = false;
+
+	// 检测设备类型和屏幕方向
+	function checkDeviceAndOrientation() {
+		if (typeof window !== 'undefined') {
+			isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+			isPortrait = window.innerHeight > window.innerWidth;
+		}
+	}
+
+	// 监听屏幕方向变化
+	let orientationChangeHandler;
+
+	onMount(() => {
+		if (typeof window !== 'undefined') {
+			checkDeviceAndOrientation();
+			orientationChangeHandler = () => checkDeviceAndOrientation();
+			window.addEventListener('resize', orientationChangeHandler);
+			window.addEventListener('orientationchange', orientationChangeHandler);
+		}
+	});
+
+	onDestroy(() => {
+		if (typeof window !== 'undefined') {
+			window.removeEventListener('resize', orientationChangeHandler);
+			window.removeEventListener('orientationchange', orientationChangeHandler);
+		}
+	});
 </script>
 
 <svelte:head>
@@ -46,3 +79,14 @@
 	<link rel="icon" href="/favicon.svg" />
 </svelte:head>
 {@render children()}
+
+<!-- 遮罩 -->
+{#if isMobile && isPortrait}
+	<div class="fixed inset-0 bg-black bg-opacity-90 flex flex-col items-center justify-center z-1">
+		<div class="text-white text-center p-8">
+			<div class="text-4xl mb-4">🔄</div>
+			<h2 class="text-2xl font-bold mb-4">请旋转设备</h2>
+			<p class="text-lg">为了获得最佳体验，请将设备旋转至横屏模式</p>
+		</div>
+	</div>
+{/if}
