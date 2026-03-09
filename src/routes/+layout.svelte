@@ -2,17 +2,6 @@
 	import "./layout.css";
 	let { children } = $props();
 	import { onMount } from "svelte";
-	onMount(() => {
-		// 注册 Service Worker
-		if ("serviceWorker" in navigator) {
-			window.addEventListener("load", () => {
-				navigator.serviceWorker
-					.register("/sw.js")
-					.then((reg) => console.log("PWA 注册成功:", reg.scope))
-					.catch((err) => console.log("PWA 注册失败:", err));
-			});
-		}
-	});
 </script>
 
 <svelte:head>
@@ -40,8 +29,18 @@
 		property="og:image"
 		content="https://edit.lieflat.live/web-app-manifest-512x512.png"
 	/>
+	<script>
+		if ("serviceWorker" in navigator) {
+			window.addEventListener("load", () => {
+				navigator.serviceWorker
+					.register("/sw.js")
+					.then((reg) => console.log("SW 运行中", reg.scope))
+					.catch((err) => console.log("SW 注册失败", err));
+			});
+		}
+	</script>
 	<meta property="og:url" content="https://edit.lieflat.live/" />
-	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta property="og:type" content="website" />
 	<link rel="manifest" href="/manifest.json" />
 	<meta name="theme-color" content="#000000" />

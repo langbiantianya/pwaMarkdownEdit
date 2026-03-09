@@ -54,13 +54,13 @@
                 cherry?.setMarkdown(mdTxt, true);
             },
         });
-        let customMenuCLoseFile = Cherry.createMenuHook("关闭文档", {
-            iconName: "",
-            onClick: async function () {
-                window.location.reload();
-            },
-            locale: {},
-        });
+        // let customMenuCLoseFile = Cherry.createMenuHook("关闭文档", {
+        //     iconName: "",
+        //     onClick: async function () {
+        //         window.location.reload();
+        //     },
+        //     locale: {},
+        // });
         /**
          * 自定义一个自定义菜单
          * 点第一次时，把选中的文字变成同时加粗和斜体
@@ -126,14 +126,18 @@
                     noIcon: true,
                     name: "issues",
                     onclick: (event) => {
-                        window.open("https://github.com/langbiantianya/pwaMarkdownEdit/issues")
+                        window.open(
+                            "https://github.com/langbiantianya/pwaMarkdownEdit/issues",
+                        );
                     },
                 },
                 {
                     noIcon: true,
                     name: "about",
                     onclick: (event) => {
-                        alert("本编辑器基于腾讯开源的cherry markdown编辑器开发")
+                        alert(
+                            "本编辑器基于腾讯开源的cherry markdown编辑器开发",
+                        );
                     },
                 },
             ],
@@ -458,7 +462,7 @@
                 ],
                 toolbarRight: [
                     "export",
-                    "customMenuCLoseFile",
+                    // "customMenuCLoseFile",
                     "changeLocale",
                     "wordCount",
                 ],
@@ -485,7 +489,7 @@
                     customMenuCName: customMenuC,
                     customMenuTable,
                     customMenuOpenFile,
-                    customMenuCLoseFile,
+                    // customMenuCLoseFile,
                 },
                 shortcutKeySettings: {
                     /** 是否替换已有的快捷键, true: 替换默认快捷键； false： 会追加到默认快捷键里，相同的shortcutKey会覆盖默认的 */
