@@ -20,21 +20,25 @@ self.addEventListener('install', (event) => {
 
 // 2. 动态缓存：只要浏览器请求过，就自动存下来
 self.addEventListener('fetch', (event) => {
+  // 【新增过滤】只缓存 http 和 https 请求，跳过浏览器插件请求
+  if (!(event.request.url.indexOf('http') === 0)) return;
+
+  // 排除非 GET 请求
   if (event.request.method !== 'GET') return;
 
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      // 如果有缓存就用缓存，没有就去联网下
-      return cached || fetch(event.request).then((response) => {
-        // 只有正常的响应才存入缓存
-        if (response && response.status === 200) {
-          const respCopy = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, respCopy));
+    caches.match(event.request).then((response) => {
+      return response || fetch(event.request).then((networkResponse) => {
+        // 确保响应有效再缓存
+        if (networkResponse && networkResponse.status === 200) {
+          const responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseToCache);
+          });
         }
-        return response;
+        return networkResponse;
       }).catch(() => {
-        // 彻底断网且没缓存时的反馈
-        console.log('资源获取失败且无缓存:', event.request.url);
+        // 离线且无缓存时的逻辑
       });
     })
   );
