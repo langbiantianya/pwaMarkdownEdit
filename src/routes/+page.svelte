@@ -123,6 +123,15 @@
             subMenuConfig: [
                 {
                     noIcon: true,
+                    name: "更多工具",
+                    onclick: (event) => {
+                        window.open(
+                            "https://utils.lieflat.live",
+                        );
+                    },
+                },
+                {
+                    noIcon: true,
                     name: "issues",
                     onclick: (event) => {
                         window.open(
