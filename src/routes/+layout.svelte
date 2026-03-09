@@ -1,18 +1,28 @@
 <script>
 	import "./layout.css";
 	let { children } = $props();
-	import { onMount, onDestroy } from 'svelte';
+	import { onMount, onDestroy } from "svelte";
 
 	// 检测是否为移动端
-	let isMobile = false;
+	let isMobile = $state(false);
 	// 检测是否为竖屏
-	let isPortrait = false;
+	let isPortrait = $state(false);
 
 	// 检测设备类型和屏幕方向
 	function checkDeviceAndOrientation() {
-		if (typeof window !== 'undefined') {
-			isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+		if (typeof window !== "undefined") {
+			isMobile =
+				window.innerWidth <= 768 ||
+				/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+					navigator.userAgent,
+				);
 			isPortrait = window.innerHeight > window.innerWidth;
+			console.log("Device check:", {
+				isMobile,
+				isPortrait,
+				width: window.innerWidth,
+				height: window.innerHeight,
+			});
 		}
 	}
 
@@ -20,18 +30,24 @@
 	let orientationChangeHandler;
 
 	onMount(() => {
-		if (typeof window !== 'undefined') {
+		if (typeof window !== "undefined") {
 			checkDeviceAndOrientation();
 			orientationChangeHandler = () => checkDeviceAndOrientation();
-			window.addEventListener('resize', orientationChangeHandler);
-			window.addEventListener('orientationchange', orientationChangeHandler);
+			window.addEventListener("resize", orientationChangeHandler);
+			window.addEventListener(
+				"orientationchange",
+				orientationChangeHandler,
+			);
 		}
 	});
 
 	onDestroy(() => {
-		if (typeof window !== 'undefined') {
-			window.removeEventListener('resize', orientationChangeHandler);
-			window.removeEventListener('orientationchange', orientationChangeHandler);
+		if (typeof window !== "undefined") {
+			window.removeEventListener("resize", orientationChangeHandler);
+			window.removeEventListener(
+				"orientationchange",
+				orientationChangeHandler,
+			);
 		}
 	});
 </script>
@@ -82,7 +98,9 @@
 
 <!-- 遮罩 -->
 {#if isMobile && isPortrait}
-	<div class="fixed inset-0 bg-black bg-opacity-90 flex flex-col items-center justify-center z-1">
+	<div
+		class="fixed inset-0 bg-black bg-opacity-90 flex flex-col items-center justify-center z-[999]"
+	>
 		<div class="text-white text-center p-8">
 			<div class="text-4xl mb-4">🔄</div>
 			<h2 class="text-2xl font-bold mb-4">请旋转设备</h2>
