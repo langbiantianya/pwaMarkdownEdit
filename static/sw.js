@@ -1,4 +1,4 @@
-const CACHE_NAME = 'markdown-v1.6.2';
+const CACHE_NAME = 'markdown-v1.6.3';
 
 // 1. 仅放置最核心、绝对不会错的入口文件
 const ESSENTIAL_FILES = [

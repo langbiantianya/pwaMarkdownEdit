@@ -2,6 +2,7 @@
     import { onMount } from "svelte";
 
     import "cherry-markdown/dist/cherry-markdown.css";
+    // node_modules\cherry-markdown\dist\cherry-markdown.d.ts
     import { readLocalMarkdown } from "$lib/utlis/file_utils";
     /**
      * @type {HTMLDivElement}
@@ -20,7 +21,7 @@
             // 依然可以保留这一行，但不要指望它能显示你的自定义文字。
             event.returnValue = true;
         });
-        const { default: Cherry } = await import("cherry-markdown");
+        const { default: Cherry } = await import("cherry-markdown/dist/cherry-markdown");
         /**
          * 自定义一个语法
          */
@@ -236,30 +237,30 @@
                     // flowSessionCursor: 'default'
                 },
                 syntax: {
-                    link: {
-                        attrRender: (text, href) => {
-                            return ``;
-                        },
-                    },
-                    image: {
-                        videoWrapper: (link, type, defaultWrapper) => {
-                            console.log(type);
-                            return defaultWrapper;
-                        },
-                    },
-                    autoLink: {
-                        /** 生成的<a>标签追加target属性的默认值 空：在<a>标签里不会追加target属性， _blank：在<a>标签里追加target="_blank"属性 */
-                        target: "",
-                        /** 生成的<a>标签追加rel属性的默认值 空：在<a>标签里不会追加rel属性， nofollow：在<a>标签里追加rel="nofollow：在"属性*/
-                        rel: "",
-                        /** 是否开启短链接 */
-                        enableShortLink: true,
-                        /** 短链接长度 */
-                        shortLinkLength: 20,
-                        attrRender: (text, href) => {
-                            return ``;
-                        },
-                    },
+                    // link: {
+                    //     attrRender: (text, href) => {
+                    //         return ``;
+                    //     },
+                    // },
+                    // image: {
+                    //     videoWrapper: (link, type, defaultWrapper) => {
+                    //         console.log(type);
+                    //         return defaultWrapper;
+                    //     },
+                    // },
+                    // autoLink: {
+                    //     /** 生成的<a>标签追加target属性的默认值 空：在<a>标签里不会追加target属性， _blank：在<a>标签里追加target="_blank"属性 */
+                    //     target: "",
+                    //     /** 生成的<a>标签追加rel属性的默认值 空：在<a>标签里不会追加rel属性， nofollow：在<a>标签里追加rel="nofollow：在"属性*/
+                    //     rel: "",
+                    //     /** 是否开启短链接 */
+                    //     enableShortLink: true,
+                    //     /** 短链接长度 */
+                    //     shortLinkLength: 20,
+                    //     attrRender: (text, href) => {
+                    //         return ``;
+                    //     },
+                    // },
                     codeBlock: {
                         theme: "twilight",
                         lineNumber: true, // 默认显示行号
@@ -267,33 +268,8 @@
                         copyCode: true,
                         editCode: true,
                         changeLang: true,
-                        wrapperRender: (lang, code, html) => {
-                            return `<div class="custom-codeblock-wrapper language-${lang}" data-tips="可以自定义代码块外层容器">${html}</div>`;
-                        },
                         customBtns: [
-                            {
-                                html: "自定义按钮1",
-                                onClick: (event, code, lang, dom) => {
-                                    console.log(`【${lang}】: ${code}`);
-                                    console.log(dom);
-                                },
-                            },
-                            {
-                                html: "自定义按钮2",
-                                onClick: (event, code, lang, dom) => {
-                                    console.log(`【${lang}】: ${code}`);
-                                    console.log(dom);
-                                },
-                            },
                         ],
-                        customRenderer: {
-                            // 特殊配置“all”，会应用于所有语言
-                            // 'all': {
-                            //   render: (src, sign, cherryEngine, lang)=> {
-                            //     return `<p class="my-render">lang:${lang};code:${src}</p>`;
-                            //   }
-                            // }
-                        },
                     },
                     table: {
                         enableChart: true,
@@ -324,77 +300,12 @@
                     htmlBlock: {
                         removeTrailingNewline: false,
                     },
-                    // toc: {
-                    //     tocStyle: 'nested'
-                    // }
-                    // 'header': {
-                    //   strict: false
-                    // }
-
                     panel: {
                         // 是否支持对齐语法
                         enableJustify: true,
                         // 是否支持信息面板语法
                         enablePanel: true,
-                    },
-                    footnote: {
-                        /**
-                         * 脚注标号的配置
-                         */
-                        refNumber: {
-                            appendClass: "ref-number", // 添加到引用序号的类名
-                            // 脚注标号的内容
-                            render: (refNum, refTitle) => `[${refNum}]`,
-                            // 点击标号时回调
-                            clickRefNumberCallback: (
-                                event,
-                                refNum,
-                                refTitle,
-                                content,
-                            ) => {
-                                // console.log(refNum, refTitle, content);
-                            },
-                        },
-                        /**
-                         * 脚注列表的配置
-                         *  - refList: false 不渲染脚注列表
-                         */
-                        // refList: false,
-                        refList: {
-                            appendClass: "ref-list",
-                            title: {
-                                appendClass: "ref-list-title", // 添加到脚注列表标题的类名
-                                render: () => "", // 标题的内容，为空则渲染cherry默认的标题
-                            },
-                            listItem: {
-                                appendClass: "ref-list-item", // 添加到脚注列表单个脚注的类名
-                                render: (
-                                    refNum,
-                                    refTitle,
-                                    content,
-                                    refNumberLinkRender,
-                                ) => {
-                                    return `${refNumberLinkRender(refNum, refTitle)}${content}`;
-                                },
-                            },
-                        },
-                        /**
-                         * hover到脚注标号时，显示一个卡片
-                         *  - bubbleCard: false 不响应hover事件
-                         */
-                        // bubbleCard: false,
-                        bubbleCard: {
-                            appendClass: "bubble-card", // 添加到卡片上的类名
-                            // 自定义渲染卡片内容
-                            render: (refNum, refTitle, content) => {
-                                return `
-              <div class="cherry-ref-bubble-card__title">${refNum}. ${refTitle}</div>
-              <div class="cherry-ref-bubble-card__content">${content}</div>
-              <div class="cherry-ref-bubble-card__foot"></div>
-            `;
-                            },
-                        },
-                    },
+                    }
                 },
                 customSyntax: {
                     // SyntaxHookClass
@@ -483,24 +394,14 @@
                 },
                 customMenu: {
                     customMenuAName: customMenuA,
-                    // customMenuBName: customMenuB,
                     customMenuCName: customMenuC,
                     customMenuTable,
                     customMenuFile,
-                    // customMenuCLoseFile,
                 },
                 shortcutKeySettings: {
                     /** 是否替换已有的快捷键, true: 替换默认快捷键； false： 会追加到默认快捷键里，相同的shortcutKey会覆盖默认的 */
                     isReplace: false,
                     shortcutKeyMap: {
-                        // "Alt-Digit1": {
-                        //     hookName: "header",
-                        //     aliasName: "标题",
-                        // },
-                        // "Control-Shift-KeyX": {
-                        //     hookName: "bold",
-                        //     aliasName: "加粗",
-                        // },
                     },
                 },
                 config: {
@@ -516,18 +417,7 @@
                 },
             },
             keydown: [],
-            //extensions: [],
             callback: {
-                // onClickPreview: (event) => {
-                //     console.log("onClickPreview", event);
-                // },
-                // afterAsyncRender: (md, html) => {
-                //     console.log("afterAsyncRender", md, html);
-                // },
-                // urlProcessor(url, srcType) {
-                //     console.log(`url-processor`, url, srcType);
-                //     return url;
-                // },
                 afterChange(text, html) {
                     localStorage.setItem("lastMarkdown", text);
                 },
