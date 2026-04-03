@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(npm run:*)",
-      "Bash(ls .svelte-kit/cloudflare/sw.js .svelte-kit/cloudflare/manifest.webmanifest .svelte-kit/cloudflare/workbox-*.js)"
+      "Bash(ls .svelte-kit/cloudflare/sw.js .svelte-kit/cloudflare/manifest.webmanifest .svelte-kit/cloudflare/workbox-*.js)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:www.npmjs.com)"
     ]
   }
 }
