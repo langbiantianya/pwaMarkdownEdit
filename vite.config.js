@@ -9,6 +9,8 @@ export default defineConfig({
 		sveltekit(),
 		VitePWA({
 			registerType: 'autoUpdate',
+			injectRegister: false,
+			devOptions: { enabled: true },
 			manifest: {
 				name: 'Markdown Edit',
 				short_name: 'Markdown',

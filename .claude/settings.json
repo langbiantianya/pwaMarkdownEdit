@@ -6,7 +6,9 @@
       "WebSearch",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:raw.githubusercontent.com)",
-      "WebFetch(domain:www.npmjs.com)"
+      "WebFetch(domain:www.npmjs.com)",
+      "Bash(npm ls:*)",
+      "Bash(timeout 10 bash -c 'npm run preview &:*)"
     ]
   }
 }

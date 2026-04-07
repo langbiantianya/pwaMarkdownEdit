@@ -93,6 +93,7 @@
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta property="og:type" content="website" />
 	<link rel="icon" href="/favicon.svg" />
+	<link rel="manifest" href="/manifest.webmanifest" />
 </svelte:head>
 {@render children()}
 
