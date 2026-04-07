@@ -81,17 +81,18 @@ define(['./workbox-959db468'], (function (workbox) { 'use strict';
    * See https://goo.gl/S9QRab
    */
   workbox.precacheAndRoute([{
-    "url": "index.html",
-    "revision": "0.266qa2ehbss"
+    "url": "/",
+    "revision": "0.vbv1hahm8dg"
   }], {});
   workbox.cleanupOutdatedCaches();
-  workbox.registerRoute(new workbox.NavigationRoute(workbox.createHandlerBoundToURL("index.html"), {
-    allowlist: [/^\/$/]
+  workbox.registerRoute(new workbox.NavigationRoute(workbox.createHandlerBoundToURL("/"), {
+    allowlist: [/^\/$/],
+    denylist: [/\/_app\//, /\/@vite/, /\/@import/, /\/-/]
   }));
   workbox.registerRoute(/^https:\/\/cdn\.jsdelivr\.net\/.*/i, new workbox.CacheFirst({
     "cacheName": "cdn-cache",
     plugins: [new workbox.ExpirationPlugin({
-      maxEntries: 50,
+      maxEntries: 60,
       maxAgeSeconds: 2592000
     }), new workbox.CacheableResponsePlugin({
       statuses: [0, 200]
@@ -101,6 +102,15 @@ define(['./workbox-959db468'], (function (workbox) { 'use strict';
     "cacheName": "map-cache",
     plugins: [new workbox.ExpirationPlugin({
       maxEntries: 10,
+      maxAgeSeconds: 2592000
+    }), new workbox.CacheableResponsePlugin({
+      statuses: [0, 200]
+    })]
+  }), 'GET');
+  workbox.registerRoute(/^https:\/\/github\.githubassets\.com\/.*/i, new workbox.CacheFirst({
+    "cacheName": "emoji-cache",
+    plugins: [new workbox.ExpirationPlugin({
+      maxEntries: 100,
       maxAgeSeconds: 2592000
     }), new workbox.CacheableResponsePlugin({
       statuses: [0, 200]

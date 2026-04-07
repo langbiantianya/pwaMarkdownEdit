@@ -44,9 +44,11 @@ export default defineConfig({
 			},
 			workbox: {
 				maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
-				globPatterns: ['**/*.{js,css,html,ico,png,svg,json,woff,woff2}'],
+				navigateFallback: '/',
+				navigateFallbackDenylist: [/\/_app\//, /\/@vite/, /\/@import/, /\/-/],
+				globPatterns: ['**/*.{js,css,html,ico,png,svg,json,woff,woff2,ttf,eot,otf,webp}'],
 				additionalManifestEntries: [
-					{ url: 'index.html', revision: Date.now().toString() }
+					{ url: '/', revision: '1' }
 				],
 				runtimeCaching: [
 					{
@@ -55,7 +57,7 @@ export default defineConfig({
 						options: {
 							cacheName: 'cdn-cache',
 							expiration: {
-								maxEntries: 50,
+								maxEntries: 60,
 								maxAgeSeconds: 30 * 24 * 60 * 60
 							},
 							cacheableResponse: {
@@ -70,6 +72,20 @@ export default defineConfig({
 							cacheName: 'map-cache',
 							expiration: {
 								maxEntries: 10,
+								maxAgeSeconds: 30 * 24 * 60 * 60
+							},
+							cacheableResponse: {
+								statuses: [0, 200]
+							}
+						}
+					},
+					{
+						urlPattern: /^https:\/\/github\.githubassets\.com\/.*/i,
+						handler: 'CacheFirst',
+						options: {
+							cacheName: 'emoji-cache',
+							expiration: {
+								maxEntries: 100,
 								maxAgeSeconds: 30 * 24 * 60 * 60
 							},
 							cacheableResponse: {

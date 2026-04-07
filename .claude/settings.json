@@ -8,7 +8,9 @@
       "WebFetch(domain:raw.githubusercontent.com)",
       "WebFetch(domain:www.npmjs.com)",
       "Bash(npm ls:*)",
-      "Bash(timeout 10 bash -c 'npm run preview &:*)"
+      "Bash(timeout 10 bash -c 'npm run preview &:*)",
+      "Bash(python3 -c ':*)",
+      "Bash(node -e ':*)"
     ]
   }
 }
